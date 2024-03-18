@@ -1,2 +1,12 @@
 # vk
  
+### Run locally
+
+```shell
+docker-compose up -d postgres  
+time sleep 10
+docker-compose up filmlibrary
+```
+
+###  Tests
+- `go test ./tests -coverprofile=coverage.out -coverpkg=./...`
