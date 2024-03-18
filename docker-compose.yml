@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+  filmlibrary:
+    container_name: filmlibrary
+    build: ./
+    command: ./app
+    ports:
+      - "8080:8080"
+
+    environment:
+      DB_DSN: "postgres://postgres:mysecretpassword@postgres:5432/postgres?sslmode=disable"
+  postgres:
+    restart: always
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "mysecretpassword"
+    volumes:
+      - ./migrations/000001_init.up.sql:/docker-entrypoint-initdb.d/000001_init.up.sql
+    ports:
+      - "5432:5432"

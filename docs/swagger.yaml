@@ -1,0 +1,341 @@
+basePath: /
+definitions:
+  actors.Actor:
+    properties:
+      date: {}
+      gender:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  films.Film:
+    properties:
+      actors:
+        items:
+          $ref: '#/definitions/actors.Actor'
+        type: array
+      date: {}
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      rating: {}
+    type: object
+  handlers.Response:
+    properties:
+      data: {}
+    type: object
+  handlers.UserData:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Film Library application
+  title: Film Library API
+  version: "1.0"
+paths:
+  /api/actors:
+    get:
+      description: Get actor list
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Response'
+      summary: Get actors
+      tags:
+      - actors
+    post:
+      consumes:
+      - application/json
+      description: Create new actor
+      parameters:
+      - description: actor data
+        in: body
+        name: actor
+        required: true
+        schema:
+          $ref: '#/definitions/actors.Actor'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/handlers.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Create actor
+      tags:
+      - actors
+  /api/actors/{id}:
+    get:
+      description: Get actor by id
+      parameters:
+      - description: actor id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Response'
+      summary: Get actor
+      tags:
+      - actors
+    post:
+      consumes:
+      - application/json
+      description: Update full actor data
+      parameters:
+      - description: actor id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: actor data
+        in: body
+        name: actor
+        required: true
+        schema:
+          $ref: '#/definitions/actors.Actor'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Update actor
+      tags:
+      - actors
+  /api/actors/{id}/{columnName}:
+    post:
+      consumes:
+      - application/json
+      description: Update one column actor data
+      parameters:
+      - description: actor id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: column name
+        in: path
+        name: column
+        required: true
+        type: string
+      - description: actor data
+        in: body
+        name: actor
+        required: true
+        schema:
+          $ref: '#/definitions/actors.Actor'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Update actor column
+      tags:
+      - actors
+  /api/films:
+    get:
+      description: get films sorted by parameters
+      parameters:
+      - description: sorting field
+        in: query
+        name: field
+        required: true
+        type: string
+      - description: desc or asc
+        in: query
+        name: order
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Response'
+      summary: Get films
+      tags:
+      - films
+    post:
+      consumes:
+      - application/json
+      description: Create new film
+      parameters:
+      - description: film data
+        in: body
+        name: actor
+        required: true
+        schema:
+          $ref: '#/definitions/films.Film'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/handlers.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Create film
+      tags:
+      - films
+  /api/films/{id}:
+    post:
+      consumes:
+      - application/json
+      description: update full information about film
+      parameters:
+      - description: film id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: film data
+        in: body
+        name: actor
+        required: true
+        schema:
+          $ref: '#/definitions/films.Film'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Update film
+      tags:
+      - films
+  /api/films/{id}/{column}:
+    post:
+      consumes:
+      - application/json
+      description: Can delete, change or add information
+      parameters:
+      - description: film id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: change column
+        in: path
+        name: column
+        required: true
+        type: string
+      - description: film data
+        in: body
+        name: actor
+        required: true
+        schema:
+          $ref: '#/definitions/films.Film'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Update film column
+      tags:
+      - films
+  /api/films/search:
+    get:
+      description: get films
+      parameters:
+      - description: search query
+        in: query
+        name: query
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Response'
+      summary: Search film
+      tags:
+      - films
+  /api/login:
+    post:
+      consumes:
+      - application/json
+      description: user login
+      parameters:
+      - description: user data
+        in: body
+        name: actor
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.UserData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Response'
+      summary: Login
+      tags:
+      - users
+  /api/register:
+    post:
+      consumes:
+      - application/json
+      description: register new user
+      parameters:
+      - description: user data
+        in: body
+        name: actor
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.UserData'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/handlers.Response'
+      summary: Register
+      tags:
+      - users
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Actor Management</title>
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    th, td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+</head>
+<body>
+
+<h1>Actor Management</h1>
+
+<h2>Add Actor</h2>
+<form id="addActorForm">
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name"><br>
+    <label for="gender">Gender:</label><br>
+    <input type="radio" id="male" name="gender" value="male"> male
+    <input type="radio" id="female" name="gender" value="female"> female <br>
+    <label for="date">Date:</label><br>
+    <input type="date" id="date" name="date"><br><br>
+    <button type="submit">Add Actor</button>
+</form>
+
+<h2>Actor List</h2>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody id="actorTableBody">
+        <!-- Actor data will be displayed here -->
+    </tbody>
+</table>
+
+<script>
+// Функция для обновления таблицы актеров
+function updateActorTable() {
+    fetch("/api/actors")
+    .then(response => response.json())
+    .then(actors => {
+        const actorTableBody = document.getElementById("actorTableBody");
+        actorTableBody.innerHTML = ""; // Очищаем текущие данные в таблице
+        actors.forEach(actor => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${actor.id}</td>
+                <td>${actor.name}</td>
+                <td>${actor.gender}</td>
+                <td>${actor.date}</td>
+            `;
+            actorTableBody.appendChild(row);
+        });
+    })
+    .catch(error => {
+        console.error("Error fetching actor list:", error);
+    });
+}
+
+// Обработчик отправки формы добавления актера
+document.getElementById("addActorForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const formData = new FormData(form);
+    const data = {};
+    formData.forEach(function(value, key) {
+        data[key] = value;
+    });
+    
+    fetch("/api/actors", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log("Actor added successfully:", result);
+        form.reset();
+        updateActorTable();
+    })
+    .catch(error => {
+        console.error("Error adding actor:", error);
+    });
+});
+
+// Инициализация таблицы при загрузке страницы
+updateActorTable();
+</script>
+
+</body>
+</html>
