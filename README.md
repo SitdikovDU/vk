@@ -12,3 +12,5 @@ docker-compose up filmlibrary
 ```shell
 go test ./tests -coverprofile=coverage.out -coverpkg=./...
 ```
+
+- Swagger available [here](./docs/swagger.yaml).
