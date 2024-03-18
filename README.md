@@ -9,4 +9,6 @@ docker-compose up filmlibrary
 ```
 
 ###  Tests
-- `go test ./tests -coverprofile=coverage.out -coverpkg=./...`
+```shell
+go test ./tests -coverprofile=coverage.out -coverpkg=./...
+```
