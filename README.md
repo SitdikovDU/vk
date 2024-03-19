@@ -14,4 +14,4 @@ go test ./tests -coverprofile=coverage.out -coverpkg=./...
 ```
 
 - Swagger available [here](./docs/swagger.yaml).
-- пароль админа на сайте user: admin password: MySuperSecretPassword
+- Admin username: admin password: MySuperSecretPassword
